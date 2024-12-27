@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="Sukarela"
+            android:text="*Loading"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTarikSimpanan" />
@@ -39,7 +39,7 @@
             android:id="@+id/idTransaksi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="65000000097"
+            android:text="Loading"
             android:textColor="@color/abu_abu_pinjaman"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,12 +56,20 @@
             app:layout_constraintEnd_toStartOf="@+id/tvNominalRiwayat"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/icStatusTransaksi"
+            android:layout_width="49dp"
+            android:layout_height="19dp"
+            android:src="@drawable/ic_approve_txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tvNominalRiwayat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="500.000"
+            android:text="*Loading"
             android:textSize="15sp"
             app:layout_constraintBottom_toTopOf="@+id/tglTransaksi"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -70,7 +78,7 @@
             android:id="@+id/tglTransaksi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20/09/2024"
+            android:text="*Loading"
             android:textColor="@color/abu_abu_pinjaman"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"

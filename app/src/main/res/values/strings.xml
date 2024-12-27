@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GCG-AKOR</string>
+    <string name="app_name">Kopegmar</string>
     <string name="txt_selamat_datang">Selamat Datang!</string>
     <string name="txt_total_pinjaman">Total Pinjaman</string>
 
@@ -42,6 +42,7 @@
     <string name="txt_pilih_tmbl">Pilih</string>
     <string name="txt_edit_profil">Edit Profil</string>
     <string name="txt_sandi_yang_diketik_ulang_tidak_sama">Sandi yang diketik ulang tidak sama!</string>
+    <string name="loading">*Loading</string>
 
 
     <!--    Untuk digunakan pada recycleview history pinjaman -->

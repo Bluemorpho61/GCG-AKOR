@@ -1,16 +1,21 @@
 package com.alkindi.gcg_akor.ui.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.alkindi.gcg_akor.data.model.ViewModelFactory
+import com.alkindi.gcg_akor.data.remote.customizednetworkingclass.ImageLoaderCustom
+import com.alkindi.gcg_akor.data.remote.retrofit.ApiConfig
 import com.alkindi.gcg_akor.databinding.ActivityPersonalDataBinding
 import com.alkindi.gcg_akor.ui.viewmodel.PersonalDataViewModel
 import com.alkindi.gcg_akor.utils.AndroidUIHelper
+import kotlinx.coroutines.launch
 
 class PersonalDataActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPersonalDataBinding
@@ -31,21 +36,179 @@ class PersonalDataActivity : AppCompatActivity() {
             insets
         }
         showData()
+        getImageData()
+        buttonLogic()
+        checkLoading()
 
         binding.btnBack.setOnClickListener {
             finish()
+        }
+        binding.btnKonfirmEdit.setOnClickListener {
+            changeUserPersonalData()
+            observeEditResponse()
+        }
+    }
+
+    private fun observeEditResponse() {
+        try {
+            personalDataViewModel.editPersonalDataResponse.observe(this) { res ->
+                if (res.code == 200) {
+                    AndroidUIHelper.showWarningToastShort(
+                        this,
+                        "Personal Data user telah berhasil diubah"
+                    )
+                    binding.layoutConfirmButton.visibility = View.GONE
+                    binding.btnEditPersonal.visibility = View.VISIBLE
+                    binding.tvEdtFieldWarning.visibility = View.GONE
+
+                    binding.edtNama.isEnabled = false
+                    binding.edtNama.isFocusable = false
+
+                    binding.edtNIP.isEnabled = false
+                    binding.edtNIP.isFocusable = false
+
+                    binding.edtTempatLahir.isEnabled = false
+                    binding.edtTempatLahir.isFocusable = false
+
+                    binding.edtTglLahir.isEnabled = false
+                    binding.edtTglLahir.isFocusable = false
+
+                    binding.edtAlamat.isEnabled = false
+                    binding.edtAlamat.isFocusable = false
+
+                    binding.edtNoHP.isEnabled = false
+                    binding.edtNoHP.isFocusable = false
+
+                    binding.edtEmail.isEnabled = false
+                    binding.edtEmail.isFocusable = false
+                } else {
+                    AndroidUIHelper.showAlertDialog(
+                        this,
+                        "Error!",
+                        "Tidak dapat melakukan edit data user!: ${res.message.toString()}"
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to execute function: ${e.message.toString()}")
+            AndroidUIHelper.showAlertDialog(this, "Error!", "${e.message}")
+        }
+
+    }
+
+    private fun checkLoading() {
+        personalDataViewModel.isLoading.observe(this) { res ->
+            showLoading(res)
+        }
+    }
+
+    private fun changeUserPersonalData() {
+        val memberId = binding.edtIdMember.text.toString()
+        val name = binding.edtNama.text.toString()
+        val noNIP = binding.edtNIP.text.toString()
+        val tempatLahir = binding.edtTempatLahir.text.toString()
+        val tglLahir = binding.edtTglLahir.text.toString()
+        val alamat = binding.edtAlamat.text.toString()
+
+        lifecycleScope.launch {
+            try {
+                personalDataViewModel.editUserPersonalData(
+                    memberId,
+                    name,
+                    noNIP,
+                    tempatLahir,
+                    tglLahir,
+                    alamat
+                )
+
+            } catch (e: Exception) {
+                Log.e(TAG, "Unable to execute editPersonalData function: $e")
+                AndroidUIHelper.showAlertDialog(this@PersonalDataActivity,"Error","${e.message}")
+            }
+        }
+
+    }
+
+    private fun getImageData() {
+        personalDataViewModel.getSession().observe(this) {
+            lifecycleScope.launch {
+                personalDataViewModel.getUserImage(it.username)
+                showImageData()
+            }
+        }
+
+    }
+
+    private fun showImageData() {
+        personalDataViewModel.userImageResponse.observe(this) { res ->
+            ImageLoaderCustom(binding.imProfile).execute("${ApiConfig.BASE_URL_KOPEGMAR}${res.data}")
+        }
+    }
+
+    private fun buttonLogic() {
+        binding.btnEditPersonal.setOnClickListener {
+            binding.layoutConfirmButton.visibility = View.VISIBLE
+            binding.btnEditPersonal.visibility = View.GONE
+            binding.tvEdtFieldWarning.visibility = View.VISIBLE
+
+            binding.edtNama.isEnabled = true
+            binding.edtNama.isFocusable = true
+
+            binding.edtNIP.isEnabled = true
+            binding.edtNIP.isFocusable = true
+
+            binding.edtTempatLahir.isEnabled = true
+            binding.edtTempatLahir.isFocusable = true
+
+            binding.edtTglLahir.isEnabled = true
+            binding.edtTglLahir.isFocusable = true
+
+            binding.edtAlamat.isEnabled = true
+            binding.edtAlamat.isFocusable = true
+
+            binding.edtNoHP.isEnabled = true
+            binding.edtNoHP.isFocusable = true
+
+            binding.edtEmail.isEnabled = true
+            binding.edtEmail.isFocusable = true
+        }
+        binding.btnBatalkanEdit.setOnClickListener {
+            binding.layoutConfirmButton.visibility = View.GONE
+            binding.btnEditPersonal.visibility = View.VISIBLE
+            binding.tvEdtFieldWarning.visibility = View.GONE
+
+            binding.edtNama.isEnabled = false
+            binding.edtNama.isFocusable = false
+
+            binding.edtNIP.isEnabled = false
+            binding.edtNIP.isFocusable = false
+
+            binding.edtTempatLahir.isEnabled = false
+            binding.edtTempatLahir.isFocusable = false
+
+            binding.edtTglLahir.isEnabled = false
+            binding.edtTglLahir.isFocusable = false
+
+            binding.edtAlamat.isEnabled = false
+            binding.edtAlamat.isFocusable = false
+
+            binding.edtNoHP.isEnabled = false
+            binding.edtNoHP.isFocusable = false
+
+            binding.edtEmail.isEnabled = false
+            binding.edtEmail.isFocusable = false
         }
     }
 
     private fun showData() {
         val male = "Laki-laki"
         val female = "Perempuan"
-        personalDataViewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
+//        personalDataViewModel.isLoading.observe(this) {
+//            showLoading(it)
+//        }
         getData()
         personalDataViewModel.savedPersonalData.observe(this) { res ->
-            val personalData =if (!res.isNullOrEmpty()) res[0] else null
+            val personalData = if (!res.isNullOrEmpty()) res[0] else null
 
             binding.edtNama.setText(personalData?.nama ?: "Kosong")
             binding.edtNIP.setText(personalData?.mbrEmpno ?: "Kosong")
@@ -106,5 +269,9 @@ class PersonalDataActivity : AppCompatActivity() {
         if (isLoading)
             binding.progressBar.visibility = View.VISIBLE else
             binding.progressBar.visibility = View.GONE
+    }
+
+    companion object {
+        private val TAG = PersonalDataActivity::class.java.simpleName
     }
 }

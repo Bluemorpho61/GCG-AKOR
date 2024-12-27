@@ -11,7 +11,7 @@
         android:id="@+id/imIconAkor"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/akor_logo"
+        android:src="@drawable/kopegmar_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/master_logo_gcg"
+        android:src="@drawable/ic_poweredby"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="25dp"

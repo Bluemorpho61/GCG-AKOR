@@ -149,7 +149,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
                         android:paddingHorizontal="16dp"
-                        android:text="Detail Simpanan"
+                        android:text="Riwayat Transaksi"
                         android:textColor="@color/txt_blue" />
 
                     <Space

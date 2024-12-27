@@ -61,7 +61,7 @@ data class DetailHistoryPinjamanItem(
 	@field:SerializedName("dana_cair")
 	val danaCair: Any? = null,
 
-	@field:SerializedName("aprinfo")
+	@field:SerializedName("apr")
 	val apr: Any? = null,
 
 	@field:SerializedName("jakhu")
@@ -111,6 +111,9 @@ data class DetailHistoryPinjamanItem(
 
 	@field:SerializedName("pjm_code")
 	val pjmCode: String? = null,
+
+	@field:SerializedName("name")
+	val name: String? = null,
 
 	@field:SerializedName("settlement_amount")
 	val settlementAmount: Any? = null,
@@ -212,8 +215,5 @@ data class DetailHistoryPinjamanItem(
 	val docDate: String? = null,
 
 	@field:SerializedName("apr_stl_date")
-	val aprStlDate: Any? = null,
-
-	@field:SerializedName("name")
-	val name: String? =null
+	val aprStlDate: Any? = null
 )

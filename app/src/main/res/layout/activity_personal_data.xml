@@ -51,6 +51,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
+    <Button
+        android:id="@+id/btnEditPersonal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imProfile" />
+
+    <LinearLayout
+        android:id="@+id/layoutConfirmButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEditPersonal">
+
+        <Button
+            android:id="@+id/btnBatalkanEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Batalkan" />
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnKonfirmEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Konfirmasi" />
+    </LinearLayout>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -60,7 +97,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imProfile">
+        app:layout_constraintTop_toBottomOf="@id/layoutConfirmButton">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -73,16 +110,37 @@
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="20dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="@string/text_label_idMember" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/text_label_idMember" />
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tvEdtFieldWarning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="fill_vertical"
+                        android:visibility="gone"
+                        android:text="*)Tidak dapat di edit"
+                        android:textColor="@color/abu_abu_pinjaman"
+                        android:textSize="10sp" />
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/edtIdMember"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:text="200583" />
 
                 <TextView
@@ -95,6 +153,7 @@
                     android:id="@+id/edtNama"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:text="@string/text_namaMember" />
 
                 <TextView
@@ -107,6 +166,7 @@
                     android:id="@+id/edtNIP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:text="2602293404" />
 
                 <LinearLayout
@@ -130,11 +190,12 @@
                             android:id="@+id/edtTempatLahir"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:enabled="false"
                             android:text="Jakarta" />
                     </LinearLayout>
 
                     <Space
-                        android:layout_width="80dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content" />
 
                     <LinearLayout
@@ -149,10 +210,11 @@
                             android:fontFamily="@font/poppins_medium"
                             android:text="Tanggal Lahir" />
 
-                        <EditText
+                        <com.alkindi.gcg_akor.ui.customview.DatePicker
                             android:id="@+id/edtTglLahir"
-                            android:layout_width="match_parent"
+                            android:layout_width="120dp"
                             android:layout_height="wrap_content"
+                            android:enabled="false"
                             android:text="17-04-2000" />
                     </LinearLayout>
 
@@ -168,6 +230,7 @@
                     android:id="@+id/edtKelamin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:text="Laki-laki" />
 
                 <TextView
@@ -180,6 +243,7 @@
                     android:id="@+id/edtAlamat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:text="Jl. KH. Agus Salim No. 29A Jakarta Pusat. Telepon: 021-31935668. Jl. Hos Cokroaminoto, No. 84, Menteng Jakarta Pusat. " />
 
                 <TextView
@@ -192,6 +256,7 @@
                     android:id="@+id/edtNoHP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:text="089776653562" />
 
                 <TextView
@@ -204,6 +269,7 @@
                     android:id="@+id/edtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:text="candra123@email.com" />
             </LinearLayout>
         </ScrollView>

@@ -29,7 +29,7 @@ data class AdmPinjamanItem(
 	val adm: Int? = null,
 
 	@field:SerializedName("asuransi")
-	val asuransi: Double? = null,
+	val asuransi: Any? = null,
 
 	@field:SerializedName("angsuran")
 	val angsuran: Any? = null,

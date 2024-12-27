@@ -28,6 +28,7 @@ class NominalPinjamanActivity : AppCompatActivity() {
     private lateinit var userID: String
     private var tipePinjaman: String? = null
     private var dataPotonganExtra: InputtedBiayaPot? = null
+    private var docnumPinjaman: String? = null
     private val nominalPinjamanViewModel: NominalPinjamanViewModel by viewModels {
         ViewModelFactory.getInstance(application)
     }
@@ -72,7 +73,11 @@ class NominalPinjamanActivity : AppCompatActivity() {
         if (tipePinjaman == "Rumah" || tipePinjaman == "Mobil") {
             nominalPinjamanViewModel.uploadPengajuanPinjamanLain.observe(this) { res ->
                 if (res.code == 200) {
-                    val toDetailPinjaman = Intent(this, DetailPinjamanInfoActivity::class.java)
+                    docnumPinjaman = res.data!!.docNum
+                    val toDetailPinjaman =
+                        Intent(this, DetailPinjamanInfoActivity::class.java).apply {
+                            putExtra(DetailPinjamanInfoActivity.EXTRA_DOCNUM, docnumPinjaman)
+                        }
                     AndroidUIHelper.showWarningToastShort(this, "Pengajuan pinjaman berhasil!")
                     startActivity(toDetailPinjaman)
                 } else {
@@ -86,7 +91,10 @@ class NominalPinjamanActivity : AppCompatActivity() {
         } else {
             nominalPinjamanViewModel.uploadPengajuanPinjaman.observe(this) { res ->
                 if (res.code == 200) {
-                    val toDetailPinjaman = Intent(this, DetailPinjamanInfoActivity::class.java)
+                    val toDetailPinjaman =
+                        Intent(this, DetailPinjamanInfoActivity::class.java).apply {
+                            putExtra(DetailPinjamanInfoActivity.EXTRA_DOCNUM, res.data?.docNum)
+                        }
                     AndroidUIHelper.showWarningToastShort(this, "Pengajuan pinjaman berhasil!")
                     startActivity(toDetailPinjaman)
                 } else {
@@ -177,24 +185,52 @@ class NominalPinjamanActivity : AppCompatActivity() {
                     val nominalSimpKhusus = res.data?.simpKhusus.toString()
                     val nominalPinjamanDiajukan =
                         FormatterAngka.formatterRibuanKeInt(binding.tvJumlahNominal.text.toString())
-                    val nominalAdministrasi = res.data?.adm.toString()
-                    val nominalAsuransi = res.data?.asuransi.toString()
-                    val nominalProvisi = res.data?.provisi.toString()
+                    val nominalAdministrasi = res.data?.adm
+                    val nominalAsuransi = res.data?.asuransi
+                    val nominalProvisi = res.data?.provisi
                     val nominalJasa =
                         FormatterAngka.formatterRibuanKeInt(binding.edtJasa.text.toString())
                     val nominalTotal = nominalPinjamanDiajukan + nominalJasa
                     val nominalAngsBln =
                         FormatterAngka.formatterRibuanKeInt(binding.edtAngsuran.text.toString())
-                    val nominalDanaCair = res.data?.danaCair.toString()
+                    val nominalDanaCair = res.data?.danaCair
 
                     binding.edtSimpananPagu.setText(nominalSimpKhusus)
-                    binding.edtAdministrasi.setText(nominalAdministrasi)
-                    binding.edtAsuransi.setText(nominalAsuransi)
-                    binding.edtProvisi.setText(nominalProvisi)
-                    binding.edtJmlJasa.setText(nominalJasa.toString())
-                    binding.edtJmlTotal.setText(nominalTotal.toString())
-                    binding.edtAngsBln.setText(nominalAngsBln.toString())
-                    binding.edtDanaDiterima.setText(nominalDanaCair)
+                    binding.edtAdministrasi.setText(
+                        FormatterAngka.formatterAngkaRibuanDouble(
+                            nominalAdministrasi?.toDouble()
+                        )
+                    )
+                    binding.edtAsuransi.setText(
+                        FormatterAngka.numberFormatterFloatUntukHitungAdm(
+                            nominalAsuransi
+                        )
+                    )
+                    binding.edtProvisi.setText(
+                        FormatterAngka.numberFormatterIntUntukHitungAdm(
+                            nominalProvisi
+                        )
+                    )
+                    binding.edtJmlJasa.setText(
+                        FormatterAngka.numberFormatterIntUntukHitungAdm(
+                            nominalJasa
+                        )
+                    )
+                    binding.edtJmlTotal.setText(
+                        FormatterAngka.numberFormatterIntUntukHitungAdm(
+                            nominalTotal
+                        )
+                    )
+                    binding.edtAngsBln.setText(
+                        FormatterAngka.numberFormatterIntUntukHitungAdm(
+                            nominalAngsBln
+                        )
+                    )
+                    binding.edtDanaDiterima.setText(
+                        FormatterAngka.numberFormatterFloatUntukHitungAdm(
+                            nominalDanaCair
+                        )
+                    )
                 }
             }
         } else {
@@ -204,27 +240,55 @@ class NominalPinjamanActivity : AppCompatActivity() {
                     binding.btnHitungBiaya.visibility = View.GONE
                     binding.btnConfirmPinjaman.visibility = View.VISIBLE
                     val asuransiValue = res.data?.asuransi
-                    val nominalPagu = res.data?.simpKhusus.toString()
+                    val nominalPagu = res.data?.simpKhusus
+                    val nominalAdministrasi = res.data?.adm
 
-                    val nominalAdministrasi = res.data?.adm.toString()
-//                val nominalAsuransi = res.data?.asuransi.toString()
-                    val formattedAsuransi = FormatterAngka.formatterAngkaRibuanDouble(asuransiValue)
-                    val angsuran = res.data?.angsuran.toString()
-                    val nominalProvisi =
-                        FormatterAngka.formatterRibuanKeIntDouble(res.data?.provisi.toString())
-                            .toString()
-                    val danaDiterima = res.data?.danaCair.toString()
-                    val total = res.data?.total.toString()
-                    val nominalJasa = res.data?.jasa.toString()
+                    val angsuran = res.data?.angsuran
+                    val nominalProvisi = res.data?.provisi
+                    val danaDiterima = res.data?.danaCair
+                    val total = res.data?.total
+                    val nominalJasa = res.data?.jasa
 
-                    binding.edtSimpananPagu.setText(nominalPagu)
-                    binding.edtProvisi.setText(nominalProvisi)
-                    binding.edtAdministrasi.setText(nominalAdministrasi)
-                    binding.edtAngsBln.setText(angsuran)
-                    binding.edtAsuransi.setText(formattedAsuransi)
-                    binding.edtJmlTotal.setText(total)
-                    binding.edtDanaDiterima.setText(danaDiterima)
-                    binding.edtJmlJasa.setText(nominalJasa)
+                    binding.edtSimpananPagu.setText(
+                        FormatterAngka.numberFormatterIntUntukHitungAdm(
+                            nominalPagu
+                        )
+                    )
+                    binding.edtProvisi.setText(
+                        FormatterAngka.numberFormatterFloatUntukHitungAdm(
+                            nominalProvisi
+                        )
+                    )
+                    binding.edtAdministrasi.setText(
+                        FormatterAngka.numberFormatterIntUntukHitungAdm(
+                            nominalAdministrasi
+                        )
+                    )
+                    binding.edtAngsBln.setText(
+                        FormatterAngka.numberFormatterFloatUntukHitungAdm(
+                            angsuran
+                        )
+                    )
+                    binding.edtAsuransi.setText(
+                        FormatterAngka.numberFormatterFloatUntukHitungAdm(
+                            asuransiValue
+                        )
+                    )
+                    binding.edtJmlTotal.setText(
+                        FormatterAngka.numberFormatterFloatUntukHitungAdm(
+                            total
+                        )
+                    )
+                    binding.edtDanaDiterima.setText(
+                        FormatterAngka.numberFormatterFloatUntukHitungAdm(
+                            danaDiterima
+                        )
+                    )
+                    binding.edtJmlJasa.setText(
+                        FormatterAngka.numberFormatterFloatUntukHitungAdm(
+                            nominalJasa
+                        )
+                    )
                 } else {
                     AndroidUIHelper.showWarningToastShort(this, "Error ${res.code}: ${res.message}")
                 }
@@ -267,8 +331,9 @@ class NominalPinjamanActivity : AppCompatActivity() {
 
         Log.d(TAG, "Data yang didapat dari activity sebelumnya: $dataPotonganExtra")
 
+        val tenor =FormatterAngka.penghilangNilaiKoma(dataPotonganExtra?.jmlTenor)
         binding.tvTipePotongan.text = dataPotonganExtra?.tipePotongan
-        binding.tvJmlTenor.text = dataPotonganExtra?.jmlTenor
+        binding.tvJmlTenor.text = tenor
 
         when (dataPotonganExtra?.tipePinjaman) {
             "JAPAN" -> {
@@ -331,8 +396,11 @@ class NominalPinjamanActivity : AppCompatActivity() {
                         lon = tipePinjaman
                     )
                 }
-            }else{
-                AndroidUIHelper.showWarningToastShort(this, "Silahkan lengkapi field yang masih kosong!")
+            } else {
+                AndroidUIHelper.showWarningToastShort(
+                    this,
+                    "Silahkan lengkapi field yang masih kosong!"
+                )
             }
         } else {
             val tipePinjaman = dataPotonganExtra?.tipePinjaman.toString()

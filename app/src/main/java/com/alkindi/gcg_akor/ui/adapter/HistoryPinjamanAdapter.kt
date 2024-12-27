@@ -18,18 +18,24 @@ class HistoryPinjamanAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: HistoryPinjamanItem) {
             binding.tvUniqueId.text = item.docNum
+            val statusPinjaman = item.aprinfo.toString().first()
             val fetchedNominalGaji = item.amount.toString()
             val fetchedNominalPinjamanBulanan = item.remain.toString()
-            val fetchedJmlTenor = item.sisaTenor.toString()
             val formattedNominalGaji =
                 FormatterAngka.formatterAngkaRibuanDouble(fetchedNominalGaji.toDouble())
             val formattedNominalPinjamanBulanan =
                 FormatterAngka.formatterAngkaRibuanDouble(fetchedNominalPinjamanBulanan.toDouble())
-            val formattedJmlTenor =FormatterAngka.formatterAngkaRibuanDouble(fetchedJmlTenor.toDouble())
+
+            when (statusPinjaman) {
+                'A' -> binding.tvStatus.text = "Diterima"
+                'R' -> binding.tvStatus.text = "Ditolak"
+                else -> binding.tvStatus.text = "Diproses"
+            }
+            val formattedTenor = FormatterAngka.penghilangNilaiKoma(item.term.toString())
             binding.tvNominalPinjamanBulanan.text = formattedNominalPinjamanBulanan
             binding.tvPinjamanBulanan.text = item.pjmCode
             binding.tvNominalGaji.text = formattedNominalGaji
-            binding.tvSisaTenor.text = formattedJmlTenor
+            binding.tvSisaTenor.text = formattedTenor
             with(itemView) {
                 setOnClickListener {
                     Intent(context, DetailHistoryPinjamanActivity::class.java).apply {

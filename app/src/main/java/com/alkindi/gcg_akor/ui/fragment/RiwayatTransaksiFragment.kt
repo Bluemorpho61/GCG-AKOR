@@ -1,6 +1,7 @@
 package com.alkindi.gcg_akor.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alkindi.gcg_akor.data.model.RiwayatTransaksiModel
 import com.alkindi.gcg_akor.data.model.ViewModelFactory
 import com.alkindi.gcg_akor.databinding.FragmentRiwayatTransaksiBinding
 import com.alkindi.gcg_akor.ui.adapter.RiwayatTransaksiAdapter
@@ -18,11 +18,10 @@ import kotlinx.coroutines.launch
 
 class RiwayatTransaksiFragment : Fragment() {
     private lateinit var binding: FragmentRiwayatTransaksiBinding
-    private val userID = "10006"
+    private var userID: String? = null
     private val riwayatTransaksiFragmentViewModel: RiwayatTransaksiFragmentViewModel by viewModels {
         ViewModelFactory.getInstance(requireActivity())
     }
-    private val list = ArrayList<RiwayatTransaksiModel>()
 
 
     override fun onCreateView(
@@ -32,41 +31,43 @@ class RiwayatTransaksiFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentRiwayatTransaksiBinding.inflate(inflater, container, false)
         val view = binding.root
-        showListRiwayat()
+        getSession()
         return view
+    }
+
+    private fun getSession() {
+        if (userID == null) {
+            riwayatTransaksiFragmentViewModel.getSession().observe(viewLifecycleOwner) {
+                userID = it.username
+                showListRiwayat()
+            }
+        } else {
+            showListRiwayat()
+        }
     }
 
     private fun showListRiwayat() {
         lifecycleScope.launch {
-            riwayatTransaksiFragmentViewModel.getHistoryTarikSimp(userID)
+            riwayatTransaksiFragmentViewModel.getHistoryTarikSimp(userID!!)
         }
         riwayatTransaksiFragmentViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
         riwayatTransaksiFragmentViewModel.historyTarikSimpResponse.observe(viewLifecycleOwner) { resp ->
-            val jenisTransaksi = resp[0].stp ?: "Kosong"
-            val nominal = resp[0].amount ?: "Kosong"
-            val transactionDate = resp[0].transDate ?: "Kosong"
-            val transDoc = resp[0].docNum ?: "Kosong"
-            val data = RiwayatTransaksiModel(
-                jenisTransaksi,
-                transDoc,
-                nominal,
-                transactionDate
-            )
-            list.add(data)
-            binding.rvRiwayatTransaksi.layoutManager = LinearLayoutManager(requireActivity())
-            val adapter = RiwayatTransaksiAdapter()
-            adapter.submitList(list)
-            binding.rvRiwayatTransaksi.adapter = adapter
+            Log.d(TAG, "Fetched data: ${resp.data}")
+            if (resp.data.isNullOrEmpty()) {
+                Log.d(TAG, "No data available")
+                binding.rvRiwayatTransaksi.visibility = View.GONE
+            } else {
+                binding.rvRiwayatTransaksi.visibility =
+                    View.VISIBLE
+                val adapter = RiwayatTransaksiAdapter()
+                adapter.submitList(resp.data)
+
+                binding.rvRiwayatTransaksi.layoutManager = LinearLayoutManager(requireActivity())
+                binding.rvRiwayatTransaksi.adapter = adapter
+            }
         }
-
-
-        binding.rvRiwayatTransaksi.layoutManager = LinearLayoutManager(requireActivity())
-        list.addAll(list)
-        val adapter = RiwayatTransaksiAdapter()
-        adapter.submitList(list)
-        binding.rvRiwayatTransaksi.adapter = adapter
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -77,4 +78,7 @@ class RiwayatTransaksiFragment : Fragment() {
         }
     }
 
+    companion object {
+        private val TAG = RiwayatTransaksiFragment::class.java.simpleName
+    }
 }

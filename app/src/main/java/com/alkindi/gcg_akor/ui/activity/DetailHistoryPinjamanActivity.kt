@@ -57,6 +57,8 @@ class DetailHistoryPinjamanActivity : AppCompatActivity() {
             val nominalTotal = res.data?.get(0)?.totAm.toString()
             val nominalAngsuranPerBulan = res.data?.get(0)?.angsuran.toString()
             val nominalTPot = res.data?.get(0)?.gaji.toString()
+            val statusPinjaman = res.data?.get(0)?.apr.toString().first()
+            val idUser =res.data?.get(0)?.mbrMbrid.toString()
 
             val parsedTgl = FormatterAngka.dateFormatForDetail(tgl)
             val parsedNominalPinjaman =
@@ -70,9 +72,8 @@ class DetailHistoryPinjamanActivity : AppCompatActivity() {
                 FormatterAngka.formatterAngkaRibuanDouble(nominalDanaDiterima.toDouble())
             val parsedNominalPotPribadi =
                 FormatterAngka.formatterAngkaRibuanDouble(nominalPotPribadi.toDouble())
-            val parsedTenor = FormatterAngka.formatterAngkaRibuanDouble(jumlahTenor.toDouble())
-            val parsedNominalJasa =
-                FormatterAngka.formatterAngkaRibuanDouble(nominalJasa.toDouble())
+            val parsedTenor = FormatterAngka.penghilangNilaiKoma(jumlahTenor)
+            val formattedNominalJasa = FormatterAngka.formatterAngkaRibuanDouble(nominalJasa.toDouble())
             val parsedNominalTotal =
                 FormatterAngka.formatterAngkaRibuanDouble(nominalTotal.toDouble())
             val parsedAngsuranPerBulan =
@@ -80,7 +81,12 @@ class DetailHistoryPinjamanActivity : AppCompatActivity() {
             val parsedNominalTPot =
                 FormatterAngka.formatterAngkaRibuanDouble(nominalTPot.toDouble())
 
-            binding.tvStatusPinjaman.text = res.data?.get(0)?.statusPjm ?: "Kosong"
+            when (statusPinjaman) {
+                'R' -> binding.tvStatusPinjaman.text ="Ditolak"
+                'A' -> binding.tvStatusPinjaman.text ="Diterima"
+                else -> binding.tvStatusPinjaman.text ="On Process"
+            }
+
             binding.tvTgl.text = parsedTgl
             binding.tvNoRef.text = res.data?.get(0)?.docNum
             binding.tvTipePinjaman.text = res.data?.get(0)?.pjmCode
@@ -93,12 +99,14 @@ class DetailHistoryPinjamanActivity : AppCompatActivity() {
             binding.tvTipePotongan.text = res.data?.get(0)?.loanCode
             binding.tvNominalPot.text = parsedNominalTPot
             binding.tvNominalPotPribadi.text = parsedNominalPotPribadi
-            binding.tvNominaJumlahPinjaman.text = nominalPinjaman
+            binding.tvNominaJumlahPinjaman.text = parsedNominalPinjaman
             binding.tvTenor.text = parsedTenor
-            binding.tvNominalJumlahJasa.text = parsedNominalJasa
+            binding.tvNominalJmlPinjaman.text = parsedNominalPinjaman
+            binding.tvNominalJumlahJasa.text = formattedNominalJasa
             binding.tvNominalTotal.text = parsedNominalTotal
             binding.tvAngsuranPerBln.text = parsedAngsuranPerBulan
             binding.tvNamaMember.text = res.data?.get(0)?.name
+            binding.tvIDMember.text =idUser
         }
     }
 

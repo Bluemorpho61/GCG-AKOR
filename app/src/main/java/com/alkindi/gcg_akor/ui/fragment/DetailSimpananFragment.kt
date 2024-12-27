@@ -18,7 +18,6 @@ class DetailSimpananFragment : Fragment() {
     private lateinit var binding: FragmentDetailSimpananBinding
     private var selectedValue: String? = null
 
-    //    private lateinit var userID: String
     private val detailSimpananFragmentViewModel: DetailSimpananFragmentViewModel by viewModels {
         ViewModelFactory.getInstance(requireActivity())
     }

@@ -64,7 +64,7 @@ data class HistoryPinjamanItem(
 	@field:SerializedName("dana_cair")
 	val danaCair: Any? = null,
 
-	@field:SerializedName("aprinfo")
+	@field:SerializedName("apr")
 	val apr: String? = null,
 
 	@field:SerializedName("jakhu")
@@ -89,7 +89,7 @@ data class HistoryPinjamanItem(
 	val gaji: Any? = null,
 
 	@field:SerializedName("status_pjm")
-	val statusPjm: String? = null,
+	val statusPjm: Any? = null,
 
 	@field:SerializedName("granted_by")
 	val grantedBy: Any? = null,
@@ -137,7 +137,7 @@ data class HistoryPinjamanItem(
 	val batasAngsuran: Any? = null,
 
 	@field:SerializedName("createdinfo")
-	val createdinfo: String? = null,
+	val createdinfo: Any? = null,
 
 	@field:SerializedName("no_atasan")
 	val noAtasan: Any? = null,
@@ -146,7 +146,7 @@ data class HistoryPinjamanItem(
 	val stldesc: Any? = null,
 
 	@field:SerializedName("sisa_tenor")
-	val sisaTenor: Any? = null,
+	val sisaTenor: Int? = null,
 
 	@field:SerializedName("slip_bonus")
 	val slipBonus: Any? = null,
@@ -221,7 +221,7 @@ data class HistoryPinjamanItem(
 	val maxAngsuran: Any? = null,
 
 	@field:SerializedName("pokok")
-	val pokok: Any? = null,
+	val pokok: Int? = null,
 
 	@field:SerializedName("svy")
 	val svy: Any? = null,

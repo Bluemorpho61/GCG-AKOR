@@ -12,19 +12,16 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alkindi.gcg_akor.R
-import com.alkindi.gcg_akor.data.model.RiwayatTransaksiHomeModel
 import com.alkindi.gcg_akor.data.model.ViewModelFactory
+import com.alkindi.gcg_akor.data.remote.customizednetworkingclass.ImageLoaderCustom
 import com.alkindi.gcg_akor.data.remote.response.RiwayatTransaksiItem
+import com.alkindi.gcg_akor.data.remote.retrofit.ApiConfig
 import com.alkindi.gcg_akor.databinding.ActivityHomeBinding
 import com.alkindi.gcg_akor.ui.adapter.RiwayatTransaksiHomeAdapter
 import com.alkindi.gcg_akor.ui.viewmodel.HomeViewModel
 import com.alkindi.gcg_akor.utils.AndroidUIHelper
 import com.alkindi.gcg_akor.utils.FormatterAngka
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class HomeActivity : AppCompatActivity() {
     private val homeViewModel: HomeViewModel by viewModels {
@@ -50,6 +47,8 @@ class HomeActivity : AppCompatActivity() {
         getRiwayatData()
         checkLoading()
         showTotalPinjaman()
+        getImageData()
+        showUserImage()
         homeViewModel.checkSavedLoginData()
 
         binding.btnPersonalData.setOnClickListener {
@@ -77,12 +76,27 @@ class HomeActivity : AppCompatActivity() {
             startActivity(toProfile)
         }
 
-//        checkSavedSession()
+
         getRvData()
         this.onBackPressedDispatcher.addCallback(
             this,
             doubleBackPressedOnce
         )
+    }
+
+    private fun showUserImage() {
+        homeViewModel.userImageResponse.observe(this) { res ->
+            ImageLoaderCustom(binding.imProfile).execute("${ApiConfig.BASE_URL_KOPEGMAR}${res.data}")
+        }
+    }
+
+    private fun getImageData() {
+        homeViewModel.getSession().observe(this) {
+            lifecycleScope.launch {
+                homeViewModel.getUserImage(it.username)
+            }
+        }
+
     }
 
     private fun getRiwayatData() {
@@ -158,27 +172,6 @@ class HomeActivity : AppCompatActivity() {
 //        binding.rvRiwayatTransaksiHome.adapter = adapter
     }
 
-
-    private fun getRiwayatTransaksiData(): ArrayList<RiwayatTransaksiHomeModel> {
-        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale("id", "ID"))
-        val currentDate = sdf.format(Date())
-
-        val jenisTransaksi = resources.getStringArray(R.array.jenis_transaksi_home)
-        val tipeTransaksi = resources.getStringArray(R.array.tipe_transaksi_home)
-        val status = resources.obtainTypedArray(R.array.status_transaksi_home)
-
-        val listDatas = ArrayList<RiwayatTransaksiHomeModel>()
-        for (i in jenisTransaksi.indices) {
-            val data = RiwayatTransaksiHomeModel(
-                jenisTransaksi[i],
-                tipeTransaksi[i],
-                status.getResourceId(i, -1),
-                currentDate
-            )
-            listDatas.add(data)
-        }
-        return listDatas
-    }
 
     private val doubleBackPressedOnce = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {

@@ -10,11 +10,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.alkindi.gcg_akor.data.local.model.UserProfile
 import com.alkindi.gcg_akor.data.model.ViewModelFactory
+import com.alkindi.gcg_akor.data.remote.customizednetworkingclass.ImageLoaderCustom
+import com.alkindi.gcg_akor.data.remote.retrofit.ApiConfig
 import com.alkindi.gcg_akor.databinding.ActivityEditProfileBinding
 import com.alkindi.gcg_akor.ui.viewmodel.EditProfileViewModel
 import com.alkindi.gcg_akor.utils.AndroidUIHelper
+import kotlinx.coroutines.launch
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProfileBinding
@@ -40,16 +44,32 @@ class EditProfileActivity : AppCompatActivity() {
         getDataFromPreviousActivity()
         changePasswordBtnLogic()
         checkResponseStatus()
+        getImage()
+        showUserImage()
 
         binding.btnConfirmEdit.setOnClickListener {
             sendDataChanges()
         }
         binding.btnGantiGambar.setOnClickListener {
-//            cariGambar()
             galleryLauncher.launch("image/*")
         }
-        binding.btnBack.setOnClickListener{
+        binding.btnBack.setOnClickListener {
             finish()
+        }
+    }
+
+    private fun showUserImage() {
+        editProfileViewModel.userImageResponse.observe(this) {res->
+            ImageLoaderCustom(binding.imProfile).execute("${ApiConfig.BASE_URL_KOPEGMAR}${res.data}")
+        }
+
+    }
+
+    private fun getImage() {
+        editProfileViewModel.getSession().observe(this) {
+            lifecycleScope.launch {
+                editProfileViewModel.getUserImage(it.username)
+            }
         }
     }
 
@@ -151,12 +171,12 @@ class EditProfileActivity : AppCompatActivity() {
         const val EXTRA_ID = "extra_id"
     }
 
-   private val galleryLauncher =registerForActivityResult(ActivityResultContracts.GetContent()){
-        val galleryUri =it
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
+        val galleryUri = it
 
         try {
             binding.imProfile.setImageURI(galleryUri)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }

@@ -28,7 +28,7 @@ class TarikSimpananActivity : AppCompatActivity() {
     private lateinit var userID: String
     private lateinit var nominalValue: String
     private var isNominalVisible = true
-    private var setShownFragment = true
+    private var setShownFragment = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +64,6 @@ class TarikSimpananActivity : AppCompatActivity() {
         }
 
         binding.btnDetailSimpanan.setOnClickListener {
-
             if (setShownFragment) {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentDetailSimpanan, DetailSimpananFragment(), "frag_detail")
@@ -77,7 +76,6 @@ class TarikSimpananActivity : AppCompatActivity() {
                 binding.btnDetailSimpanan.text = "Riwayat Transaksi"
             }
             setShownFragment = !setShownFragment
-//            binding.btnDetailSimpanan.text = "Riwayat Simpanan"
         }
 
         binding.btnBack.setOnClickListener {
@@ -128,6 +126,7 @@ class TarikSimpananActivity : AppCompatActivity() {
                         ) {
                             val selectedItem = parent?.getItemAtPosition(position).toString()
                             passDataToFragment(selectedItem)
+
                             val nominal = nominalData[selectedItem] ?: "0"
                             val formattedNominal =
                                 FormatterAngka.formatterAngkaRibuanDouble(nominal.toDouble())
@@ -161,15 +160,6 @@ class TarikSimpananActivity : AppCompatActivity() {
                         }
                     }
             }
-//                val fetchedNominal = it.data?.get(0)?.sskr.toString()
-//                val nominal =
-//                    FormatterAngka.formatterAngkaRibuan(
-//                        FormatterAngka.formatterRibuanKeInt(
-//                            fetchedNominal
-//                        )
-//                    )
-//                nominalValue = nominal
-//                binding.tvNominalSimpananSukarela.text = nominalValue
         }
 
     }
@@ -182,7 +172,7 @@ class TarikSimpananActivity : AppCompatActivity() {
         fragment.arguments = bundle
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentDetailSimpanan,fragment)
+            .replace(R.id.fragmentDetailSimpanan, fragment)
             .commit()
     }
 

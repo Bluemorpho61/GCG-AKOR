@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:visibility="gone"
+
                     app:cardCornerRadius="16dp"
                     app:cardElevation="8dp">
 
@@ -92,7 +92,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
-                            android:text="On Process"
+                            android:text="@string/loading"
                             android:textSize="22sp" />
 
                         <LinearLayout
@@ -105,7 +105,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_medium"
-                                android:text="09 Okt 2024"
+                                android:text="@string/loading"
                                 android:textColor="@color/abu_abu_detail_pinjaman_info"
                                 android:textSize="13sp" />
 
@@ -121,7 +121,7 @@
                                 android:id="@+id/tvNoRef"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="55000000484"
+                                android:text="@string/loading"
                                 android:textColor="@color/abu_abu_detail_pinjaman_info"
                                 android:textSize="13sp" />
                         </LinearLayout>
@@ -143,7 +143,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="JAPAN"
+                            android:text="@string/loading"
                             android:textSize="18sp" />
 
                         <TextView
@@ -182,7 +182,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_medium"
-                                android:text="50.000.000"
+                                android:text="@string/loading"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -220,7 +220,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_medium"
-                                android:text="100.000"
+                                android:text="@string/loading"
                                 android:textColor="@color/abu_abu_total_pinjaman"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/blackBorder1" />
@@ -258,7 +258,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_medium"
-                                android:text="675.000"
+                                android:text="@string/loading"
                                 android:textColor="@color/abu_abu_total_pinjaman"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/blackBorder2" />
@@ -294,7 +294,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_medium"
-                                android:text="500.000"
+                                android:text="@string/loading"
                                 android:textColor="@color/abu_abu_total_pinjaman"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/blackBorder3" />
@@ -332,7 +332,7 @@
                                 android:id="@+id/tvNominalDanaDiterima"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="48.275.000"
+                                android:text="@string/loading"
                                 android:textColor="#000000"
                                 android:textSize="15sp"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -346,7 +346,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:visibility="gone"
+
                     android:layout_marginTop="10dp"
                     android:paddingVertical="10dp"
                     app:cardCornerRadius="16dp"
@@ -373,7 +373,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_medium"
-                            android:text="10006"
+                            android:text="@string/loading"
                             android:textSize="15sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -397,7 +397,7 @@
                             android:ellipsize="end"
                             android:fontFamily="@font/poppins_medium"
                             android:maxLines="1"
-                            android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, distinctio."
+                            android:text="@string/loading"
                             android:textSize="15sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/textView13"
@@ -418,7 +418,7 @@
                             android:id="@+id/tvTipePinjamanInDetail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="JAPAN"
+                            android:text="@string/loading"
                             android:textSize="15sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tvNamaMember" />
@@ -438,7 +438,7 @@
                             android:id="@+id/tvTipePotongan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="GAJI"
+                            android:text="@string/loading"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvTipePinjamanInDetail" />
 
@@ -459,7 +459,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_medium"
-                            android:text="12.000.000"
+                            android:text="@string/loading"
                             android:textColor="@color/abu_abu_total_pinjaman"
                             android:textSize="15sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -479,7 +479,7 @@
                             android:id="@+id/tvNominalPotPribadi"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2.000.000"
+                            android:text="@string/loading"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvNominalPot" />
 
@@ -497,7 +497,7 @@
                             android:id="@+id/tvNominalJmlPinjaman"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="50.000.000"
+                            android:text="@string/loading"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvNominalPotPribadi" />
 
@@ -515,7 +515,7 @@
                             android:id="@+id/tvTenor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="36"
+                            android:text="@string/loading"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvNominalJmlPinjaman" />
 
@@ -533,7 +533,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_medium"
-                            android:text="15.750.000"
+                            android:text="@string/loading"
                             android:textColor="#000000"
                             android:textSize="15sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -553,7 +553,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_medium"
-                            android:text="65.750.000"
+                            android:text="@string/loading"
                             android:textColor="#000000"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvNominalJumlahJasa" />
@@ -572,7 +572,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_medium"
-                            android:text="1.826.389"
+                            android:text="@string/loading"
                             android:textColor="#000000"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tvNominalTotal" />

@@ -4,6 +4,7 @@ import com.alkindi.gcg_akor.data.remote.response.AjukanPinjamanLainResponse
 import com.alkindi.gcg_akor.data.remote.response.AjukanPinjamanResponse
 import com.alkindi.gcg_akor.data.remote.response.DetailHistoryPinjamanResponse
 import com.alkindi.gcg_akor.data.remote.response.DetailSimpananResponse
+import com.alkindi.gcg_akor.data.remote.response.EditPersonalDataResponse
 import com.alkindi.gcg_akor.data.remote.response.ExtUserProfileResponse
 import com.alkindi.gcg_akor.data.remote.response.HistoryPinjamanResponse
 import com.alkindi.gcg_akor.data.remote.response.HistoryTarikSimpResponse
@@ -12,12 +13,14 @@ import com.alkindi.gcg_akor.data.remote.response.HitungAdmPinjamanResponse
 import com.alkindi.gcg_akor.data.remote.response.LoginResponse
 import com.alkindi.gcg_akor.data.remote.response.NominalSimpananResponse
 import com.alkindi.gcg_akor.data.remote.response.PersonalDataResponse
+import com.alkindi.gcg_akor.data.remote.response.RiwayatTarikSimpananResponse
 import com.alkindi.gcg_akor.data.remote.response.RiwayatTransaksiResponse
 import com.alkindi.gcg_akor.data.remote.response.TarikNominalSimpananResponse
 import com.alkindi.gcg_akor.data.remote.response.TenorListResponse
 import com.alkindi.gcg_akor.data.remote.response.TipePotonganResponse
 import com.alkindi.gcg_akor.data.remote.response.TotalPinjamanResponse
 import com.alkindi.gcg_akor.data.remote.response.UpdateProfileResponse
+import com.alkindi.gcg_akor.data.remote.response.UserProfileImageResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -91,6 +94,16 @@ interface ApiService {
         @Url fullUrl: String
     ): RiwayatTransaksiResponse
 
+    @GET
+    suspend fun getImageGambar(
+        @Url fullUrl: String
+    ): UserProfileImageResponse
+
+    @GET
+    suspend fun getRiwayatTarikSimp(
+        @Url fullUrl: String
+    ): RiwayatTarikSimpananResponse
+
     @FormUrlEncoded
     @POST("https://kopegmar.gcgakor.id/txn?fnc=runLib;opic=${ApiConfig.API_DEV_CODE_KOPEGMAR};csn=${ApiConfig.WORKSPACE_CODE_KOPEGMAR};rc=NU5mgOhAZUGhJ24WH1zuqwTnRtBFfK6y6OVw0Q2/ZWSE2T%2BDBSLsen/SgBttLGZS")
     suspend fun postTarikSimpanan(
@@ -132,4 +145,11 @@ interface ApiService {
         @Field("argt") argt: String = "vars",
         @Field("argl") argl: String
     ): AjukanPinjamanLainResponse
+
+    @FormUrlEncoded
+    @POST("${ApiConfig.BASE_URL_KOPEGMAR}txn?fnc=runLib;opic=${ApiConfig.API_DEV_CODE_KOPEGMAR};csn=${ApiConfig.WORKSPACE_CODE_KOPEGMAR};rc=gS%2BZtyMBHTdgEoheRgK6hpiC0koiixuPdMRrFD8wcA/ok1VvRGdRugmaQOPnZORD")
+    suspend fun editUserPersonalData(
+        @Field("argt") argt: String = "vars",
+        @Field("argl") argl: String
+    ): EditPersonalDataResponse
 }

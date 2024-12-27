@@ -61,7 +61,9 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
 //    Library bwt networking API
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.bumptech.glide:glide:4.11.0")
+    implementation ("com.github.bumptech.glide:annotations:4.11.0")
+    implementation ("com.github.bumptech.glide:okhttp3-integration:4.11.0")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
@@ -77,6 +79,7 @@ dependencies {
 
 
 //    annotationProcessor ("androidx.room:room-compiler:$room_version")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
 
 //    testImplementation ("androidx.room:room-testing:$room_version")
     testImplementation(libs.junit)

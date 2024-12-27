@@ -1,12 +1,14 @@
 package com.alkindi.gcg_akor.utils
 
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 object FormatterAngka {
 
-    fun formatterAngkaRibuan(angka: Int): String {
+    fun formatterAngkaRibuan(angka: Int?): String {
         val formattedNilai = NumberFormat.getInstance(Locale("ind", "ID"))
         return formattedNilai.format(angka)
     }
@@ -16,17 +18,37 @@ object FormatterAngka {
     }
 
     fun formatterAngkaRibuanDouble(angka: Double?): String {
-        val formattedNilai = NumberFormat.getInstance(Locale("ind", "ID"))
-        return formattedNilai.format(angka)
+//        val formattedNilai = NumberFormat.getInstance(Locale("ind", "ID"))
+//        return formattedNilai.format(angka)
+        val symbols = DecimalFormatSymbols(Locale("id", "ID")).apply {
+            decimalSeparator = ','
+            groupingSeparator = '.'
+        }
+        val decimalFormat = DecimalFormat("#,##0.00", symbols)
+        return decimalFormat.format(angka)
     }
 
-    fun formatterRibuanKeIntDouble(angka: String): Double {
-        return angka.replace(".", "").replace(" ", "").toDouble()
+    fun numberFormatterIntUntukHitungAdm(angka: Int?): String {
+        val formattedValue = String.format("%,d", angka!!.toLong())
+        return formattedValue
     }
 
-    fun formatterAngkaRibuanUntukDisplay(angka: Any): String {
-        val formattedNilai = NumberFormat.getInstance(Locale("ind", "ID"))
-        return formattedNilai.format(angka)
+    fun numberFormatterFloatUntukHitungAdm(angka: Any?): String {
+        val symbols = DecimalFormatSymbols(Locale("id", "ID")).apply {
+            decimalSeparator = ','
+            groupingSeparator = '.'
+        }
+        val decimalFormat = DecimalFormat("#,##0.00", symbols)
+        return decimalFormat.format(angka)
+    }
+
+    fun penghilangNilaiKoma(angka: String?): String {
+        return if (angka != null) {
+            val number = angka.toDoubleOrNull()
+            number?.toInt()?.toString() ?: "0"
+        } else {
+            "0"
+        }
     }
 
     fun dateFormatForDetail(dateString: String): String {

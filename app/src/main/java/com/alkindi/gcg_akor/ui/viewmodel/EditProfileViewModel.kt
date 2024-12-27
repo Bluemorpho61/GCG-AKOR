@@ -8,8 +8,10 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.alkindi.gcg_akor.data.local.model.UserModel
 import com.alkindi.gcg_akor.data.remote.response.UpdateProfileResponse
+import com.alkindi.gcg_akor.data.remote.response.UserProfileImageResponse
 import com.alkindi.gcg_akor.data.remote.retrofit.ApiConfig
 import com.alkindi.gcg_akor.data.repository.UserRepository
+import com.alkindi.gcg_akor.utils.ApiNetworkingUtils
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
@@ -17,10 +19,37 @@ class EditProfileViewModel(private val userRepository: UserRepository) : ViewMod
     private val _updateProfileResponse = MutableLiveData<UpdateProfileResponse>()
     val updateProfileResponse: LiveData<UpdateProfileResponse> = _updateProfileResponse
 
+    private val _userImageResponse = MutableLiveData<UserProfileImageResponse>()
+    val userImageResponse: LiveData<UserProfileImageResponse> = _userImageResponse
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
     fun getSession(): LiveData<UserModel> = userRepository.getSession().asLiveData()
+
+    suspend fun getUserImage(mbrid: String) {
+        if (mbrid.isEmpty()) {
+            Log.e(TAG, "Unable to use function getUserImage: ${Log.ERROR}")
+        } else {
+            try {
+                _isLoading.value = true
+                val apiService = ApiConfig.getApiService()
+                val apiCode = "KvRnqbr%2Bktu7HRDvQttp6EuNm8yG06I%2BsB2%2BPg9itk8%3D"
+                val data = mapOf(
+                    "mbrid" to mbrid
+                )
+                val encodedData = ApiNetworkingUtils.jsonFormatter(data)
+                val fullUrl =
+                    "${ApiConfig.BASE_URL_KOPEGMAR}txn?fnc=runLib;opic=${ApiConfig.API_DEV_CODE_KOPEGMAR};csn=${ApiConfig.WORKSPACE_CODE_KOPEGMAR};rc=${apiCode};vars=${encodedData}"
+                val response = apiService.getImageGambar(fullUrl)
+                _userImageResponse.value = response
+            } catch (e: Exception) {
+                Log.e(TAG, "Unable to execute request image process: ${e.message}")
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
 
 
     fun updateUserProfile(
@@ -35,7 +64,7 @@ class EditProfileViewModel(private val userRepository: UserRepository) : ViewMod
         try {
             val jsonMap = mutableMapOf<String, String>()
             jsonMap["userID"] = userId
-            if (!namaUser .isNullOrEmpty()) jsonMap["userName"] = namaUser
+            if (!namaUser.isNullOrEmpty()) jsonMap["userName"] = namaUser
             if (!noHP.isNullOrEmpty()) jsonMap["phoneNumber"] = noHP
             if (!emailUser.isNullOrEmpty()) jsonMap["emailAddress"] = emailUser
             if (!pwLama.isNullOrEmpty()) jsonMap["cp"] = pwLama

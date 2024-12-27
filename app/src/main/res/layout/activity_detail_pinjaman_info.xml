@@ -386,14 +386,17 @@
 
                         <TextView
                             android:id="@+id/tvNamaMember"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:ellipsize="end"
                             android:fontFamily="@font/poppins_medium"
-                            android:text="Candra"
+                            android:maxLines="1"
+                            android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, distinctio."
                             android:textSize="15sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvIDMember"
-                            tools:layout_editor_absoluteY="8dp" />
+                            app:layout_constraintStart_toEndOf="@+id/textView13"
+                            app:layout_constraintTop_toBottomOf="@id/tvIDMember" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -557,6 +560,7 @@
                             app:layout_constraintTop_toBottomOf="@id/tvNominalTotal" />
 
                         <TextView
+                            android:id="@+id/tvAngsuranBln"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_medium"
