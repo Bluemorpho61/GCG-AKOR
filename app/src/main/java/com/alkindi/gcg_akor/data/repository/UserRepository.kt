@@ -50,70 +50,70 @@ class UserRepository(
 //    }
 
 
-    suspend fun fetchUserPersonalData(username: String) {
-        result.value = Result.Loading
-        val data = mapOf(
-            "username" to username.uppercase()
-        )
-        val encodedData = ApiNetworkingUtils.jsonFormatter(data)
-        val apiCode = "gS%2BZtyMBHTdgEoheRgK6hoGn9gB9jdSeepx4X6/t2uDtvQTu57s32w%3D%3D"
-        val fullUrl =
-            "${ApiConfig.BASE_URL_KOPEGMAR}txn?fnc=runLib;opic=${ApiConfig.API_DEV_CODE_KOPEGMAR};csn=${ApiConfig.WORKSPACE_CODE_KOPEGMAR};rc=${apiCode};vars=${encodedData}"
-
-        try {
-            val response = apiService.getPersonal(fullUrl)
-            withContext(Dispatchers.IO) {
-                val personalEntityData = response.map { res ->
-                    PersonalDataEntity(
-                        mbrid = username,
-                        nama = res.name ?: "Kosong",
-                        mbrEmpno = res.noNIP ?: "Kosong",
-                        mbrEmpno2 = res.noNIP2 ?: "Kosong",
-                        companyID = res.companyID ?: "Kosong",
-                        companyBegin = res.companyBegin ?: "Kosong",
-                        companyLast = res.companyLast ?: "Kosong",
-                        mbrgroup = res.mbrGroup ?: "Kosong",
-                        religion = res.religion ?: "Kosong",
-                        education = res.education ?: "Kosong",
-                        tempatLahir = res.tempatLahir ?: "Kosong",
-                        noHp = res.phone ?: "Kosong",
-                        tglLahir = res.tglLahir ?: "Kosong",
-                        alamat = res.address ?: "Kosong",
-                        email = res.email ?: "Kosong",
-                        maritalStatus = res.maritalStatus ?: "Kosong",
-                        photoFile = res.photoFile ?: "Kosong",
-                        jenisKelamin = res.gender ?: "Kosong",
-                        termination = res.termination ?: "Kosong",
-                        termEff = res.termEff ?: "Kosong",
-                        termType = res.termType ?: "Kosong",
-                        termReason = res.termReason ?: "Kosong",
-                        description = res.description ?: "Kosong",
-                        createdInfo = res.createdInfo ?: "Kosong",
-                        modifiedInfo = res.modifiedInfo ?: "Kosong",
-                        mbrPosition = res.mbrPosition ?: "Kosong",
-                        mbrUnit = res.mbrUnit ?: "Kosong",
-                        namaBank = res.bank ?: "Kosong",
-                        noRek = res.noRek ?: "Kosong",
-                        fileKtp = res.fileKTP ?: "Kosong",
-                        fileSlip = res.fileSlip ?: "Kosong",
-                        fileSk = res.fileSK ?: "Kosong",
-                        ktp = res.ktp ?: "Kosong",
-                        namaRek = res.namaRek ?: "Kosong"
-                    )
-                }
-                val isDataExist = userPersonalDAO.getDataByMBRID(username)
-                if (isDataExist == null) {
-                    userPersonalDAO.insertData(personalEntityData)
-                }
-            }
-
-
-        } catch (e: Exception) {
-            Log.e(TAG, "ERROR FETCHING AND SAVE USER PERSONAL DATA!: ${e.message.toString()}")
-            throw e
-        }
-
-    }
+//    suspend fun fetchUserPersonalData(username: String) {
+//        result.value = Result.Loading
+//        val data = mapOf(
+//            "username" to username.uppercase()
+//        )
+//        val encodedData = ApiNetworkingUtils.jsonFormatter(data)
+//        val apiCode = "gS%2BZtyMBHTdgEoheRgK6hoGn9gB9jdSeepx4X6/t2uDtvQTu57s32w%3D%3D"
+//        val fullUrl =
+//            "${ApiConfig.BASE_URL_KOPEGMAR}txn?fnc=runLib;opic=${ApiConfig.API_DEV_CODE_KOPEGMAR};csn=${ApiConfig.WORKSPACE_CODE_KOPEGMAR};rc=${apiCode};vars=${encodedData}"
+//
+//        try {
+//            val response = apiService.getPersonal(fullUrl)
+//            withContext(Dispatchers.IO) {
+//                val personalEntityData = response.map { res ->
+//                    PersonalDataEntity(
+//                        mbrid = username,
+//                        nama = res.name ?: "Kosong",
+//                        mbrEmpno = res.noNIP ?: "Kosong",
+//                        mbrEmpno2 = res.noNIP2 ?: "Kosong",
+//                        companyID = res.companyID ?: "Kosong",
+//                        companyBegin = res.companyBegin ?: "Kosong",
+//                        companyLast = res.companyLast ?: "Kosong",
+//                        mbrgroup = res.mbrGroup ?: "Kosong",
+//                        religion = res.religion ?: "Kosong",
+//                        education = res.education ?: "Kosong",
+//                        tempatLahir = res.tempatLahir ?: "Kosong",
+//                        noHp = res.phone ?: "Kosong",
+//                        tglLahir = res.tglLahir ?: "Kosong",
+//                        alamat = res.address ?: "Kosong",
+//                        email = res.email ?: "Kosong",
+//                        maritalStatus = res.maritalStatus ?: "Kosong",
+//                        photoFile = res.photoFile ?: "Kosong",
+//                        jenisKelamin = res.gender ?: "Kosong",
+//                        termination = res.termination ?: "Kosong",
+//                        termEff = res.termEff ?: "Kosong",
+//                        termType = res.termType ?: "Kosong",
+//                        termReason = res.termReason ?: "Kosong",
+//                        description = res.description ?: "Kosong",
+//                        createdInfo = res.createdInfo ?: "Kosong",
+//                        modifiedInfo = res.modifiedInfo ?: "Kosong",
+//                        mbrPosition = res.mbrPosition ?: "Kosong",
+//                        mbrUnit = res.mbrUnit ?: "Kosong",
+//                        namaBank = res.bank ?: "Kosong",
+//                        noRek = res.noRek ?: "Kosong",
+//                        fileKtp = res.fileKTP ?: "Kosong",
+//                        fileSlip = res.fileSlip ?: "Kosong",
+//                        fileSk = res.fileSK ?: "Kosong",
+//                        ktp = res.ktp ?: "Kosong",
+//                        namaRek = res.namaRek ?: "Kosong"
+//                    )
+//                }
+//                val isDataExist = userPersonalDAO.getDataByMBRID(username)
+//                if (isDataExist == null) {
+//                    userPersonalDAO.insertData(personalEntityData)
+//                }
+//            }
+//
+//
+//        } catch (e: Exception) {
+//            Log.e(TAG, "ERROR FETCHING AND SAVE USER PERSONAL DATA!: ${e.message.toString()}")
+//            throw e
+//        }
+//
+//    }
 
     suspend fun deletePersonalData(username: String) {
         try {

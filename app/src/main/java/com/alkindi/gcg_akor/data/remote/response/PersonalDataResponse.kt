@@ -3,46 +3,118 @@ package com.alkindi.gcg_akor.data.remote.response
 import com.google.gson.annotations.SerializedName
 
 data class PersonalDataResponse(
-    @SerializedName("company") val companyID: String? = "Kosong",
-    @SerializedName("name") val name: String? = "Kosong",
-    @SerializedName("company_begin") val companyBegin: String? = "Kosong",
-    @SerializedName("company_last") val companyLast: String? = "Kosong",
-    @SerializedName("mbrgroup") val mbrGroup: String? = "Kosong",
-    @SerializedName("religion") val religion: String? = "Kosong",
-    @SerializedName("education") val education: String? = "Kosong",
-    @SerializedName("birth_place") val tempatLahir: String? = "Kosong",
-    @SerializedName("birth_date") val tglLahir: String? = "Kosong",
-    @SerializedName("address") val address: String? = "Kosong",
-    @SerializedName("phone") val phone: String? = "Kosong",
-    @SerializedName("email") val email: String? = "Kosong",
-    @SerializedName("marital_status") val maritalStatus: String? = "Kosong",
-    @SerializedName("photo_file") val photoFile: String? = "Kosong",
-    @SerializedName("gender") val gender: String? = "Kosong",
-    @SerializedName("termination") val termination: String? = "Kosong",
-    @SerializedName("termeff") val termEff: String? = "Kosong",
-    @SerializedName("termtype") val termType: String? = "Kosong",
-    @SerializedName("termreason") val termReason: String? = "Kosong",
-    @SerializedName("description") val description: String? = "Kosong",
-    @SerializedName("createdinfo") val createdInfo: String? = "Kosong",
-    @SerializedName("modifiedinfo") val modifiedInfo: String? = "Kosong",
-    @SerializedName("mbr_position") val mbrPosition: String? = "Kosong",
-    @SerializedName("mbr_unit") val mbrUnit: String? = "Kosong",
-    @SerializedName("mbr_empno") val noNIP: String? = "Kosong",
-    @SerializedName("mbr_empno2") val noNIP2: String? = "Kosong",
-    @SerializedName("bank") val bank: String? = "Kosong",
-    @SerializedName("nama_rek") val namaRek: String? = "Kosong",
-    @SerializedName("file_ktp") val fileKTP: String? = "Kosong",
-    @SerializedName("file_slip") val fileSlip: String? = "Kosong",
-    @SerializedName("file_sk") val fileSK: String? = "Kosong",
-    @SerializedName("ktp") val ktp: String? = "Kosong",
-    @SerializedName("norek") val noRek: String? ="Kosong"
-//    @SerializedName("name") val name: String? = "Kosong",
-//    @SerializedName("address") val address: String? = "Kosong",
-//    @SerializedName("gender") val gender: String? = "Kosong",
-//    @SerializedName("phone") val phone: String? = "Kosong",
-//    @SerializedName("email") val email: String? = "Kosong",
-//    @SerializedName("birth_place") val tempatLahir: String? = "Kosong",
-//    @SerializedName("birth_date") val tglLahir: String? = "Kosong",
-//    @SerializedName("mbr_empno") val noNIP: String? = "Kosong",
-//    @SerializedName("photo_file") val photoFile: String? = "Kosong"
+
+	@field:SerializedName("code")
+	val code: Int? = null,
+
+	@field:SerializedName("data")
+	val data: UserPersonalData? = null,
+
+	@field:SerializedName("message")
+	val message: String? = null
+)
+
+data class UserPersonalData(
+
+	@field:SerializedName("createdinfo")
+	val createdinfo: Any? = null,
+
+	@field:SerializedName("company_begin")
+	val companyBegin: String? = null,
+
+	@field:SerializedName("education")
+	val education: Any? = null,
+
+	@field:SerializedName("gender")
+	val gender: String? = null,
+
+	@field:SerializedName("birth_date")
+	val birthDate: String? = null,
+
+	@field:SerializedName("description")
+	val description: String? = null,
+
+	@field:SerializedName("file_ktp")
+	val fileKtp: Any? = null,
+
+	@field:SerializedName("mbrgroup")
+	val mbrgroup: String? = null,
+
+	@field:SerializedName("photo_file")
+	val photoFile: String? = null,
+
+	@field:SerializedName("bank")
+	val bank: String? = null,
+
+	@field:SerializedName("company")
+	val company: String? = null,
+
+	@field:SerializedName("termeff")
+	val termeff: Any? = null,
+
+	@field:SerializedName("email")
+	val email: String? = null,
+
+	@field:SerializedName("termination")
+	val termination: String? = null,
+
+	@field:SerializedName("company_last")
+	val companyLast: Any? = null,
+
+	@field:SerializedName("nama_rek")
+	val namaRek: Any? = null,
+
+	@field:SerializedName("address")
+	val address: String? = null,
+
+	@field:SerializedName("ktp")
+	val ktp: String? = null,
+
+	@field:SerializedName("birth_place")
+	val birthPlace: String? = null,
+
+	@field:SerializedName("termreason")
+	val termreason: Any? = null,
+
+	@field:SerializedName("file_slip")
+	val fileSlip: Any? = null,
+
+	@field:SerializedName("religion")
+	val religion: Any? = null,
+
+	@field:SerializedName("mbr_empno2")
+	val mbrEmpno2: Any? = null,
+
+	@field:SerializedName("marital_status")
+	val maritalStatus: Any? = null,
+
+	@field:SerializedName("file_sk")
+	val fileSk: Any? = null,
+
+	@field:SerializedName("phone")
+	val phone: String? = null,
+
+	@field:SerializedName("norek")
+	val norek: String? = null,
+
+	@field:SerializedName("mbrid")
+	val mbrid: String? = null,
+
+	@field:SerializedName("modifiedinfo")
+	val modifiedinfo: String? = null,
+
+	@field:SerializedName("mbr_position")
+	val mbrPosition: Any? = null,
+
+	@field:SerializedName("name")
+	val name: String? = null,
+
+	@field:SerializedName("termtype")
+	val termtype: Any? = null,
+
+	@field:SerializedName("mbr_unit")
+	val mbrUnit: Any? = null,
+
+	@field:SerializedName("mbr_empno")
+	val mbrEmpno: String? = null
 )

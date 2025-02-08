@@ -47,7 +47,7 @@ interface ApiService {
     @GET
     suspend fun getPersonal(
         @Url fullUrl: String
-    ): List<PersonalDataResponse>
+    ): PersonalDataResponse
 
     @GET
     suspend fun getHistorySimpanan(

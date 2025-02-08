@@ -49,6 +49,38 @@ class PersonalDataActivity : AppCompatActivity() {
         }
     }
 
+    private fun showData() {
+        getData()
+        assignData()
+    }
+
+    private fun assignData() {
+        val male = "Laki-laki"
+        val female = "Perempuan"
+        personalDataViewModel.personalDataResponse.observe(this) { res ->
+            binding.edtNama.setText(res.data?.name ?: "Kosong")
+            binding.edtNIP.setText(res.data?.mbrEmpno ?: "Kosong")
+            binding.edtKelamin.setText(
+                if (res.data?.gender == "M") male else female
+            )
+            binding.edtAlamat.setText(res.data?.address ?: "Kosong")
+            binding.edtEmail.setText(res.data?.email ?: "Kosong")
+            binding.edtNoHP.setText(res.data?.phone ?: "Kosong")
+            binding.edtTglLahir.setText(res.data?.birthDate ?: "Kosong")
+            binding.edtTempatLahir.setText(res.data?.birthPlace ?: "Kosong")
+            binding.edtIdMember.setText(res.data?.mbrid ?: "Kosong")
+
+        }
+    }
+
+    private fun getData() {
+        personalDataViewModel.getSession().observe(this) {
+            lifecycleScope.launch {
+                personalDataViewModel.getUserPersonalData(it.username)
+            }
+        }
+    }
+
     private fun observeEditResponse() {
         try {
             personalDataViewModel.editPersonalDataResponse.observe(this) { res ->
@@ -102,6 +134,13 @@ class PersonalDataActivity : AppCompatActivity() {
         }
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading)
+            binding.progressBar.visibility = View.VISIBLE
+        else
+            binding.progressBar.visibility = View.GONE
+    }
+
     private fun changeUserPersonalData() {
         val memberId = binding.edtIdMember.text.toString()
         val name = binding.edtNama.text.toString()
@@ -123,7 +162,7 @@ class PersonalDataActivity : AppCompatActivity() {
 
             } catch (e: Exception) {
                 Log.e(TAG, "Unable to execute editPersonalData function: $e")
-                AndroidUIHelper.showAlertDialog(this@PersonalDataActivity,"Error","${e.message}")
+                AndroidUIHelper.showAlertDialog(this@PersonalDataActivity, "Error", "${e.message}")
             }
         }
 
@@ -200,76 +239,72 @@ class PersonalDataActivity : AppCompatActivity() {
         }
     }
 
-    private fun showData() {
-        val male = "Laki-laki"
-        val female = "Perempuan"
-//        personalDataViewModel.isLoading.observe(this) {
-//            showLoading(it)
+//    private fun showData() {
+//        val male = "Laki-laki"
+//        val female = "Perempuan"
+////        personalDataViewModel.savedPersonalData.observe(this) { res ->
+////            val personalData = if (!res.isNullOrEmpty()) res[0] else null
+////
+////            binding.edtNama.setText(personalData?.nama ?: "Kosong")
+////            binding.edtNIP.setText(personalData?.mbrEmpno ?: "Kosong")
+////            binding.edtIdMember.setText(idMember)
+////            binding.edtTempatLahir.setText(personalData?.tempatLahir ?: "Kosong")
+////            binding.edtTglLahir.setText(personalData?.tglLahir ?: "Kosong")
+////            binding.edtKelamin.setText(
+////                if (personalData?.jenisKelamin == "M") male else female
+////            )
+////            binding.edtAlamat.setText(personalData?.alamat ?: "Kosong")
+////            binding.edtNoHP.setText(personalData?.noHp ?: "Kosong")
+////            binding.edtEmail.setText(personalData?.email ?: "Kosong")
+//
+//            // Show AlertDialog if data is null or empty
+////            if (personalData == null) {
+////                AndroidUIHelper.showAlertDialog(this, "Error", "Gagal Mengambil data dari API")
+////            }
+////            if (!res.isNullOrEmpty()) {
+////                binding.edtNama.setText(res[0].nama ?:"Kosong")
+////                binding.edtNIP.setText(res[0].mbrEmpno ?: "Kosong")
+////                binding.edtIdMember.setText(idMember)
+////                binding.edtTempatLahir.setText(res[0].tempatLahir ?: "Kosong")
+////                binding.edtTglLahir.setText(res[0].tglLahir ?: "Kosong")
+////                if (res[0].jenisKelamin == "M")
+////                    binding.edtKelamin.setText(male)
+////                else
+////                    binding.edtKelamin.setText(female)
+////                binding.edtAlamat.setText(res[0].alamat ?: "Kosong")
+////                binding.edtNoHP.setText(res[0].noHp ?: "Kosong")
+////                binding.edtEmail.setText(res[0].email ?: "Kosong")
+////            } else {
+////                AndroidUIHelper.showAlertDialog(this, "Error", "Gagal Mengambil data dari API")
+////                binding.edtNama.setText("Kosong")
+////                binding.edtNIP.setText("Kosong")
+////                binding.edtIdMember.setText(idMember)
+////                binding.edtTempatLahir.setText( "Kosong")
+////                binding.edtTglLahir.setText("Kosong")
+////                if (res[0].jenisKelamin == "M")
+////                    binding.edtKelamin.setText(male)
+////                else
+////                    binding.edtKelamin.setText(female)
+////                binding.edtAlamat.setText("Kosong")
+////                binding.edtNoHP.setText( "Kosong")
+////                binding.edtEmail.setText("Kosong")
+////            }
 //        }
-        getData()
-        personalDataViewModel.savedPersonalData.observe(this) { res ->
-            val personalData = if (!res.isNullOrEmpty()) res[0] else null
-
-            binding.edtNama.setText(personalData?.nama ?: "Kosong")
-            binding.edtNIP.setText(personalData?.mbrEmpno ?: "Kosong")
-            binding.edtIdMember.setText(idMember)
-            binding.edtTempatLahir.setText(personalData?.tempatLahir ?: "Kosong")
-            binding.edtTglLahir.setText(personalData?.tglLahir ?: "Kosong")
-            binding.edtKelamin.setText(
-                if (personalData?.jenisKelamin == "M") male else female
-            )
-            binding.edtAlamat.setText(personalData?.alamat ?: "Kosong")
-            binding.edtNoHP.setText(personalData?.noHp ?: "Kosong")
-            binding.edtEmail.setText(personalData?.email ?: "Kosong")
-
-            // Show AlertDialog if data is null or empty
-            if (personalData == null) {
-                AndroidUIHelper.showAlertDialog(this, "Error", "Gagal Mengambil data dari API")
-            }
-//            if (!res.isNullOrEmpty()) {
-//                binding.edtNama.setText(res[0].nama ?:"Kosong")
-//                binding.edtNIP.setText(res[0].mbrEmpno ?: "Kosong")
-//                binding.edtIdMember.setText(idMember)
-//                binding.edtTempatLahir.setText(res[0].tempatLahir ?: "Kosong")
-//                binding.edtTglLahir.setText(res[0].tglLahir ?: "Kosong")
-//                if (res[0].jenisKelamin == "M")
-//                    binding.edtKelamin.setText(male)
-//                else
-//                    binding.edtKelamin.setText(female)
-//                binding.edtAlamat.setText(res[0].alamat ?: "Kosong")
-//                binding.edtNoHP.setText(res[0].noHp ?: "Kosong")
-//                binding.edtEmail.setText(res[0].email ?: "Kosong")
-//            } else {
-//                AndroidUIHelper.showAlertDialog(this, "Error", "Gagal Mengambil data dari API")
-//                binding.edtNama.setText("Kosong")
-//                binding.edtNIP.setText("Kosong")
-//                binding.edtIdMember.setText(idMember)
-//                binding.edtTempatLahir.setText( "Kosong")
-//                binding.edtTglLahir.setText("Kosong")
-//                if (res[0].jenisKelamin == "M")
-//                    binding.edtKelamin.setText(male)
-//                else
-//                    binding.edtKelamin.setText(female)
-//                binding.edtAlamat.setText("Kosong")
-//                binding.edtNoHP.setText( "Kosong")
-//                binding.edtEmail.setText("Kosong")
-//            }
-        }
-    }
-
-    private fun getData() {
-        personalDataViewModel.getSession().observe(this) {
-            personalDataViewModel.getPersonalData(it.username)
-            idMember = it.username
-        }
-    }
-
-
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading)
-            binding.progressBar.visibility = View.VISIBLE else
-            binding.progressBar.visibility = View.GONE
-    }
+//    }
+//
+//
+//
+//
+//    private fun showLoading(isLoading: Boolean) {
+////        if (isLoading)
+//////            binding.progressBar.visibility = View.VISIBLE else
+//////            binding.progressBar.visibility = View.GONE
+//        if (isLoading)
+//    }
+//
+//    companion object {
+//        private val TAG = PersonalDataActivity::class.java.simpleName
+//    }
 
     companion object {
         private val TAG = PersonalDataActivity::class.java.simpleName
