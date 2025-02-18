@@ -4,6 +4,7 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 object FormatterAngka {
@@ -15,6 +16,10 @@ object FormatterAngka {
 
     fun formatterRibuanKeInt(angka: String): Int {
         return angka.replace(".", "").replace(" ", "").replace(",", "").toInt()
+    }
+
+    fun formatterRibuanKeLong(angka: String): Long {
+        return angka.replace(".", "").replace(" ", "").replace(",", "").toLong()
     }
 
     fun formatterAngkaRibuanDouble(angka: Double?): String {
@@ -57,6 +62,19 @@ object FormatterAngka {
 
         val date = inputFormat.parse(dateString)
         return outputFormat.format(date ?: "")
+    }
+
+    fun dateFormatForTarikSimp(inputDate: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale("id", "ID")) // Indonesian locale
+
+        return try {
+            val date: Date? = inputFormat.parse(inputDate)
+            outputFormat.format(date!!)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""
+        }
     }
 
 }

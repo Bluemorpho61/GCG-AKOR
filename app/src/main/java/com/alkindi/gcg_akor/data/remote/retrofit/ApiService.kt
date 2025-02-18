@@ -7,7 +7,6 @@ import com.alkindi.gcg_akor.data.remote.response.DetailSimpananResponse
 import com.alkindi.gcg_akor.data.remote.response.EditPersonalDataResponse
 import com.alkindi.gcg_akor.data.remote.response.ExtUserProfileResponse
 import com.alkindi.gcg_akor.data.remote.response.HistoryPinjamanResponse
-import com.alkindi.gcg_akor.data.remote.response.HistoryTarikSimpResponse
 import com.alkindi.gcg_akor.data.remote.response.HitungAdmPinjamanLainResponse
 import com.alkindi.gcg_akor.data.remote.response.HitungAdmPinjamanResponse
 import com.alkindi.gcg_akor.data.remote.response.LoginResponse
@@ -16,6 +15,7 @@ import com.alkindi.gcg_akor.data.remote.response.PersonalDataResponse
 import com.alkindi.gcg_akor.data.remote.response.RiwayatTarikSimpananResponse
 import com.alkindi.gcg_akor.data.remote.response.RiwayatTransaksiResponse
 import com.alkindi.gcg_akor.data.remote.response.TarikNominalSimpananResponse
+import com.alkindi.gcg_akor.data.remote.response.TarikSimpananProcessedResponse
 import com.alkindi.gcg_akor.data.remote.response.TenorListResponse
 import com.alkindi.gcg_akor.data.remote.response.TipePotonganResponse
 import com.alkindi.gcg_akor.data.remote.response.TotalPinjamanResponse
@@ -48,11 +48,6 @@ interface ApiService {
     suspend fun getPersonal(
         @Url fullUrl: String
     ): PersonalDataResponse
-
-    @GET
-    suspend fun getHistorySimpanan(
-        @Url fullUrl: String
-    ): List<HistoryTarikSimpResponse>
 
     @GET
     suspend fun getNominalSimpananUser(
@@ -103,6 +98,11 @@ interface ApiService {
     suspend fun getRiwayatTarikSimp(
         @Url fullUrl: String
     ): RiwayatTarikSimpananResponse
+
+    @GET
+    suspend fun getTarikSimpananInfo(
+        @Url fullUrl: String
+    ): TarikSimpananProcessedResponse
 
     @FormUrlEncoded
     @POST("https://kopegmar.gcgakor.id/txn?fnc=runLib;opic=${ApiConfig.API_DEV_CODE_KOPEGMAR};csn=${ApiConfig.WORKSPACE_CODE_KOPEGMAR};rc=NU5mgOhAZUGhJ24WH1zuqwTnRtBFfK6y6OVw0Q2/ZWSE2T%2BDBSLsen/SgBttLGZS")

@@ -111,7 +111,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Simpanan Sukarela"
+                        android:text="@string/loading"
                         android:textAlignment="center"
                         android:textSize="20sp" />
 
@@ -120,7 +120,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="1110038838222111212"
+                        android:text="@string/loading"
                         android:textAlignment="center" />
 
                     <TextView
@@ -151,7 +151,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="300.000"
+                            android:text="@string/loading"
                             android:textSize="24sp" />
                     </LinearLayout>
 
@@ -161,8 +161,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="07-11-2024"
+                        android:text="@string/loading"
                         android:textAlignment="center" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

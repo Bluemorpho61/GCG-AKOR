@@ -4,16 +4,28 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.alkindi.gcg_akor.data.local.model.ProcessedTarikSimp
+import com.alkindi.gcg_akor.data.model.ViewModelFactory
 import com.alkindi.gcg_akor.databinding.ActivityTarikSimpananProcessedBinding
+import com.alkindi.gcg_akor.ui.viewmodel.TarikSimpananProcessedViewModel
 import com.alkindi.gcg_akor.utils.AndroidUIHelper
+import com.alkindi.gcg_akor.utils.FormatterAngka
+import kotlinx.coroutines.launch
 
 class TarikSimpananProcessedActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTarikSimpananProcessedBinding
+    private val tarikSimpananProcessedViewModel: TarikSimpananProcessedViewModel by viewModels {
+        ViewModelFactory.getInstance(application)
+    }
+    private var extraData: ProcessedTarikSimp? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTarikSimpananProcessedBinding.inflate(layoutInflater)
@@ -31,7 +43,62 @@ class TarikSimpananProcessedActivity : AppCompatActivity() {
             finish()
         }
 
+        checkLoading()
         getDataFromPreviousActivity()
+        getTarikSimpananInfoData()
+        showPullTransactionData()
+    }
+
+    private fun checkLoading() {
+        tarikSimpananProcessedViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading)
+            binding.progressBar.visibility = View.VISIBLE
+        else
+            binding.progressBar.visibility = View.GONE
+    }
+
+    private fun showPullTransactionData() {
+        tarikSimpananProcessedViewModel.tarikSimpananProcessed.observe(this) { res ->
+            if (res.code == 200) {
+                when (res.data?.stp) {
+                    "SS" -> {
+                        binding.tvTipeSimpanan.text = "Simpanan Sukarela"
+                    }
+
+                    "SK" -> {
+                        binding.tvTipeSimpanan.text = "Simpanan Khusus"
+                    }
+
+                    "SKP" -> {
+                        binding.tvTipeSimpanan.text = "Simpanan Khusus Pagu"
+                    }
+                }
+                val nominalDitarik = res.data?.amount
+                val tglTransaksi =res.data?.transDate
+                binding.tvNominalYangDitarik.text = FormatterAngka.formatterAngkaRibuan(nominalDitarik!!.toInt())
+                binding.tvTglTransaksi.text =FormatterAngka.dateFormatForTarikSimp(tglTransaksi!!)
+
+            } else {
+                Log.e(TAG, "Can't fetch processed tarik simp data! ${Log.ERROR}")
+                AndroidUIHelper.showAlertDialog(
+                    this,
+                    "Error!",
+                    "Unable to fetch tarik simpanan data!"
+                )
+                return@observe
+            }
+        }
+    }
+
+    private fun getTarikSimpananInfoData() {
+        lifecycleScope.launch {
+            tarikSimpananProcessedViewModel.getPullTransactionInfo(extraData!!.docnum.toString())
+        }
     }
 
     private fun getDataFromPreviousActivity() {
@@ -55,15 +122,25 @@ class TarikSimpananProcessedActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.tvNominalYangDitarik.text = tarikSimpInfo!!.nominal
-        binding.tvTglTransaksi.text =tarikSimpInfo.tglTransaksi
-        binding.tvDocnum.text =tarikSimpInfo.docnum
+        extraData = tarikSimpInfo
+//        binding.tvNominalYangDitarik.text = tarikSimpInfo!!.nominal
+//        binding.tvTglTransaksi.text =tarikSimpInfo.tglTransaksi
+        binding.tvDocnum.text = extraData!!.docnum
 
-        when(tarikSimpInfo.tipeSimpanan){
-            "SS" -> {binding.tvTipeSimpanan.text = "Simpanan Sukarela"}
-            "SK" ->{binding.tvTipeSimpanan.text ="Simpanan Khusus"}
-            "SKP" ->{binding.tvTipeSimpanan.text ="Simpanan Khusus Pagu"}
-        }
+
+//        when (tarikSimpInfo.tipeSimpanan) {
+//            "SS" -> {
+//                binding.tvTipeSimpanan.text = "Simpanan Sukarela"
+//            }
+//
+//            "SK" -> {
+//                binding.tvTipeSimpanan.text = "Simpanan Khusus"
+//            }
+//
+//            "SKP" -> {
+//                binding.tvTipeSimpanan.text = "Simpanan Khusus Pagu"
+//            }
+//        }
     }
 
     companion object {

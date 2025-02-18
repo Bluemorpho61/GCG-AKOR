@@ -29,7 +29,6 @@ class TarikNominalSimpananActivity : AppCompatActivity() {
     private lateinit var tipeTransaksi: String
     private lateinit var extraData: ProcessedTarikSimp
 
-
     private val tarikNominalSimpananViewModel: TarikNominalSimpananViewModel by viewModels {
         ViewModelFactory.getInstance(application)
     }
@@ -71,18 +70,16 @@ class TarikNominalSimpananActivity : AppCompatActivity() {
     private fun getTarikSimpananAPIResponse() {
         tarikNominalSimpananViewModel.tarikNominalSimpananResponse.observe(this) { res ->
             if (res.code == 200) {
-//                docnum = res.docnum!!
+                val docnum = res.docnum!!
                 AndroidUIHelper.showWarningToastShort(this, "Tarik Simpanan Berhasil")
-                ProcessedTarikSimp(
-                    "",
-                    "",
-                    "",
-                    res.docnum.toString()
-                )
+                val extraData = ProcessedTarikSimp(docnum)
                 val toConfirmPage = Intent(
                     this@TarikNominalSimpananActivity,
                     TarikSimpananProcessedActivity::class.java
-                ).putExtra(TarikSimpananProcessedActivity.EXTRA_PROCESSED_TARIK_SIMP, extraData)
+                ).apply {
+                    putExtra(TarikSimpananProcessedActivity.EXTRA_PROCESSED_TARIK_SIMP, extraData)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                }
                 startActivity(toConfirmPage)
             } else {
                 AndroidUIHelper.showAlertDialog(
@@ -116,11 +113,11 @@ class TarikNominalSimpananActivity : AppCompatActivity() {
 
     private fun confirmTarikSimpanan() {
         val nominal = binding.tvNominalTarikSimpanan.text.toString()
-        val convertedNominal = FormatterAngka.formatterRibuanKeInt(nominal)
+        val convertedNominal = FormatterAngka.formatterRibuanKeLong(nominal)
         val tipeSimpanan = binding.tvTypeSimpanan.text
         val catatanTransaksi = binding.edtCatatan.text.toString()
         val simpananYgTersedia = binding.tvNominalTipeSimpanan.text.toString()
-        val convertedNominalYgTersedia = FormatterAngka.formatterRibuanKeInt(simpananYgTersedia)
+        val convertedNominalYgTersedia = FormatterAngka.formatterRibuanKeLong(simpananYgTersedia)
         val tglSaatIni = Date()
         val dateFormatter = SimpleDateFormat("dd-MM-yyyy")
         val formattedDate = dateFormatter.format(tglSaatIni)
@@ -141,17 +138,14 @@ class TarikNominalSimpananActivity : AppCompatActivity() {
             }
         }
         tarikNominalSimpananViewModel.tarikNominalSimpanan(
-            userMBRID,
-            convertedNominal.toString(),
-            catatanTransaksi,
-            tipeTransaksi,
-            convertedNominalYgTersedia.toString(),
-            formattedDate
+            mbrid = userMBRID,
+            nominalSimpanan = convertedNominal.toString(),
+            catatan = catatanTransaksi,
+            tipeSimpanan = tipeTransaksi,
+            simpananYgTersedia = convertedNominalYgTersedia.toString(),
+            transDate = formattedDate
         )
         extraData = ProcessedTarikSimp(
-            tipeTransaksi,
-            nominal,
-            formattedDate,
             ""
         )
     }

@@ -22,10 +22,7 @@ data class PinjDocnum(
 
 @Parcelize
 data class ProcessedTarikSimp(
-    val tipeSimpanan: String?,
-    val nominal: String?,
-    val tglTransaksi: String?,
-    val docnum: String?
+    val docnum: String?,
 ) : Parcelable
 
 @Parcelize
